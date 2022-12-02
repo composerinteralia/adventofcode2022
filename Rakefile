@@ -13,4 +13,16 @@ task :run, [:day] do |_, args|
   end
 end
 
+task :day, [:day] do |_, args|
+  day = args[:day]
+  mkdir "day#{day}"
+  touch "day#{day}/input"
+  touch "day#{day}/first_solution.rb"
+end
+
+1.upto(25).each do |i|
+  file("day#{i}") { Rake::Task[:day].invoke(i) }
+  task("run#{i}") { Rake::Task[:run].invoke(i) }
+end
+
 task default: :run
