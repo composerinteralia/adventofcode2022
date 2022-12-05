@@ -14,7 +14,7 @@ def build_stacks
 end
 
 def parse_stack_line(line)
-  line.chars.each_slice(4).map(&:join).map { _1[1] unless _1[1].strip.empty? }
+  line.chars.each_slice(4).map { _1[1] unless _1[1].strip.empty? }
 end
 
 def follow_insns
