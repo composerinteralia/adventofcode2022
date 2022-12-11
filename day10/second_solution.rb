@@ -31,9 +31,6 @@ end
 
 cpu = CPU.new(part1, part2)
 
-$data.split("\n").map do |insn|
-  op, arg = /(addx|noop) ?(.*)?/.match(insn).captures
-  cpu.send(op, arg)
-end
+$data.split("\n").map { |insn| cpu.send(*insn.split) }
 
 p part1.strength

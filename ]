@@ -1,7 +1,0 @@
-rows = $data.split("\n").map { _1.split("").map(&:to_i) }
-columns = rows.transpose
-
-visible = (columns.length + rows.length - 2) * 2
-p visible
-p (1...columns.length - 1)
-
