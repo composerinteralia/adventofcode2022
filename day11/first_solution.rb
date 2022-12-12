@@ -11,13 +11,13 @@ class Monkey
   end
 
   def inspect_items(monkeys, reduce)
+    @count += @items.size
     @items.each do |item|
-      @count += 1
-      new = reduce.(@operation.call(item))
+      new = @operation.(reduce.(item))
       monkeys[new % @div == 0 ? @t : @f] << new
     end
 
-    @items.clear
+    @items = []
   end
 
   def <<(item)
@@ -39,17 +39,14 @@ def parse_monkeys
 end
 
 parse_monkeys.tap do |monkeys|
-  20.times do
-    monkeys.each { |monkey| monkey.inspect_items(monkeys, -> { _1 / 3 }) }
-  end
+  reduce = -> { _1 / 3 }
+  20.times { monkeys.each { _1.inspect_items(monkeys, reduce) } }
   p monkeys.map(&:count).max(2).inject(&:*)
 end
 
 parse_monkeys.tap do |monkeys|
-  10000.times do
-    monkeys.each do |monkey|
-      monkey.inspect_items(monkeys, -> { _1 % monkeys.map(&:div).inject(&:*) })
-    end
-  end
+  lcm = monkeys.map(&:div).inject(&:lcm)
+  reduce = -> { _1 % lcm }
+  10000.times { monkeys.each { _1.inspect_items(monkeys, reduce) } }
   p monkeys.map(&:count).max(2).inject(&:*)
 end
